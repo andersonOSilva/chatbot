@@ -12,11 +12,10 @@ def webhook():
     if request.method == 'POST':
         pass
     elif request.method == 'GET': # Para a verificação inicial
-        if request.args.get('hub.verify_token') == os.environ.get('FB_VERIFY_TOKEN'):
+        if request.args.get('hub.verify_token') == FB_VERIFY_TOKEN:
             return request.args.get('hub.challenge')
         return "Wrong Verify Token"
     return "Nothing"
-    return 'Nothing'
 
 
 
