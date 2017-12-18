@@ -10,7 +10,14 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def webhook():
     if request.method == 'POST':
-        pass
+        try:
+            data = json.loads(request.data.decode())
+            text = data['entry'][0]['messaging'][0]['message']['text']
+            sender = data['entry'][0]['messaging'][0]['sender']['id']
+            payload = {'recipient': {'id': sender}, 'message': {'text': "Hello World"}}
+            r = requests.post('https://graph.facebook.com/v2.6/me/messages/?access_token=' + token, json=payload)
+        except Exception as e:
+            print(traceback.format_exc())
     elif request.method == 'GET': # Para a verificação inicial
         if request.args.get('hub.verify_token') == FB_VERIFY_TOKEN:
             return request.args.get('hub.challenge')
